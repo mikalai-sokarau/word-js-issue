@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
+	<!--Make sure your add-in guid is unique. Your add-in may not show up in the UI if this is not unique. -->
+	<Id>9ffe8012-2e5e-4a38-aa8c-3a62b9eaf100</Id>
+	<Version>1.0.0.0</Version>
+	<ProviderName>Wolterskluwer</ProviderName>
+	<!-- AddIn locale start -->
+	<DefaultLocale>en-us</DefaultLocale>
+	<!-- AddIn locale end -->
+	<!--This is the name shown in the Word UI.-->
+	<!-- AddIn name start -->
+	<DisplayName DefaultValue="Legal Assist"/>
+	<!-- AddIn name end -->
+	<Description DefaultValue="An add-in to search citaions in a text."/>
+	<!--Icon for your add-in. Used on installation screens and the add-ins dialog -->
+	<IconUrl DefaultValue="https://localhost:443/assets/logos/wk-logo-wheel-32x32.png"/>
+	<!--High resolution icon must be in one of the following file formats: GIF, JPG, PNG, EXIF, BMP, or TIFF. 
+		For content and task pane apps, the image resolution must be 64 x 64 pixels. 
+		For mail apps, the image must be 128 x 128 pixels. -->
+	<HighResolutionIconUrl DefaultValue="https://localhost:443/assets/logos/wk-logo-wheel-64x64.png"/>
+	<SupportUrl DefaultValue="https://localhost:443"/>
+	<AppDomains>
+		<AppDomain>https://localhost:443</AppDomain>
+	</AppDomains>
+	<Hosts>
+		<Host Name="Document"/>
+	</Hosts>
+	<Requirements>
+		<Sets>
+			<Set Name="WordApi" MinVersion="1.1"/>
+		</Sets>
+	</Requirements>
+	<DefaultSettings>
+		<SourceLocation DefaultValue="https://localhost:443/taskpane.html"/>
+	</DefaultSettings>
+	<Permissions>ReadWriteDocument</Permissions>
+	<!-- Add-in command declarations.
+		See https://msdn.microsoft.com/EN-US/library/office/mt621545.aspx for more information about add-in commands. -->
+	<VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+		<Hosts>
+			<Host xsi:type="Document">
+				<!-- DesktopFormFactor declares that the functionality is for Word on the Windows desktop. -->
+				<DesktopFormFactor>
+					<!--GetStarted information used on the callout that appears when installing the add-in.   
+						Ensure you have build 16.0.6769 or above for GetStarted section to work-->
+					<GetStarted>
+						<!--Title of the Getting Started callout. resid points to a ShortString resource -->
+						<Title resid="GetStarted.Title"/>
+						<!--Description of the Getting Started callout. resid points to a LongString resource -->
+						<Description resid="GetStarted.Description"/>
+						<!--Not used right now but you need to provide a valid resource. We will add code in the future to consume this URL.   
+    						resid points to a Url resource -->
+						<LearnMoreUrl resid="GetStarted.LearnMoreUrl"/>
+					</GetStarted>
+					<!-- Identifies the html file the contains a script reference to a function that an add-in command will use. -->
+					<FunctionFile resid="Commands.Url"/>
+					<!-- PrimaryCommandSurface declares that this add-in command will be used from the ribbon in Office. -->
+					<ExtensionPoint xsi:type="PrimaryCommandSurface">
+						<!-- Add the add-in command button to a new tab. You can use other existing tabs, or create a custom tab. -->
+						<CustomTab id="legalAssistMainTab">
+							<!-- This declares a group of buttons in the UI. -->
+							<Group id="grpLegalAssist">
+								<!-- All resid attributes refer to a resource; checkout the Resources element below. -->
+								<Label resid="grpLegalAssist.Label"/>
+								<Icon>
+									<!--These are the required image sizes-->
+									<bt:Image size="16" resid="Icon.16x16"/>
+									<bt:Image size="32" resid="Icon.32x32"/>
+									<bt:Image size="80" resid="Icon.80x80"/>
+								</Icon>
+								<!-- Declares a button -->
+								<Control xsi:type="Button" id="TaskpaneButton">
+									<Label resid="TaskpaneButton.Label"/>
+									<Supertip>
+										<Title resid="TaskpaneButton.Label"/>
+										<Description resid="TaskpaneButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.16x16"/>
+										<bt:Image size="32" resid="Icon.32x32"/>
+										<bt:Image size="80" resid="Icon.80x80"/>
+									</Icon>
+									<!-- Declares what the button does. This button will show the task pane
+										and open the page identified by the Sample_Url resource. -->
+									<Action xsi:type="ShowTaskpane">
+										<TaskpaneId>LegalAssistTaskpane</TaskpaneId>
+										<SourceLocation resid="Taskpane.Url"/>
+									</Action>
+								</Control>
+							</Group>
+							<Group id="CitationGroup">
+								<Label resid="grpFunctionalities.Label"/>
+								<Icon>
+									<bt:Image size="16" resid="Icon.Citation.16x16"/>
+									<bt:Image size="32" resid="Icon.Citation.32x32"/>
+									<bt:Image size="80" resid="Icon.Citation.80x80"/>
+								</Icon>
+								<Control xsi:type="Button" id="CitationButton">
+									<Label resid="CitationButton.Label"/>
+									<Supertip>
+										<Title resid="CitationButton.Label"/>
+										<Description resid="CitationButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.Citation.16x16"/>
+										<bt:Image size="32" resid="Icon.Citation.32x32"/>
+										<bt:Image size="80" resid="Icon.Citation.80x80"/>
+									</Icon>
+									<Action xsi:type="ShowTaskpane">
+										<TaskpaneId>LegalAssistTaskpane</TaskpaneId>
+										<SourceLocation resid="SearchCitations.Url"/>
+									</Action>
+									<Enabled>false</Enabled>
+								</Control>
+								<!-- Legal Context start -->
+								<Control xsi:type="Button" id="LegalContextButton">
+									<Label resid="LegalContextButton.Label"/>
+									<Supertip>
+										<Title resid="LegalContextButton.Label"/>
+										<Description resid="LegalContextButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.LegalContext.16x16"/>
+										<bt:Image size="32" resid="Icon.LegalContext.32x32"/>
+										<bt:Image size="80" resid="Icon.LegalContext.80x80"/>
+									</Icon>
+									<Action xsi:type="ShowTaskpane">
+										<TaskpaneId>LegalAssistTaskpane</TaskpaneId>
+										<SourceLocation resid="SearchLegalContext.Url"/>
+									</Action>
+									<Enabled>false</Enabled>
+								</Control>
+								<!-- Legal Context end -->
+								<Control xsi:type="Button" id="LegalSearchButton">
+									<Label resid="LegalSearchButton.Label"/>
+									<Supertip>
+										<Title resid="LegalSearchButton.Label"/>
+										<Description resid="LegalSearchButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.LegalSearch.16x16"/>
+										<bt:Image size="32" resid="Icon.LegalSearch.32x32"/>
+										<bt:Image size="80" resid="Icon.LegalSearch.80x80"/>
+									</Icon>
+									<Action xsi:type="ShowTaskpane">
+										<TaskpaneId>LegalAssistTaskpane</TaskpaneId>
+										<SourceLocation resid="SearchLegalSearch.Url"/>
+									</Action>
+									<Enabled>false</Enabled>
+								</Control>
+							</Group>
+							<Group id="insertGroup">
+								<Label resid="grpInsert.Label"/>
+								<Icon>
+									<!--These are the required image sizes-->
+									<bt:Image size="16" resid="Icon.InsertFootnote.16x16"/>
+									<bt:Image size="32" resid="Icon.InsertFootnote.32x32"/>
+									<bt:Image size="80" resid="Icon.InsertFootnote.80x80"/>
+								</Icon>
+								<Control xsi:type="Button" id="InsertFootnoteButton">
+									<Label resid="InsertFootnoteButton.Label"/>
+									<Supertip>
+										<Title resid="InsertFootnoteButton.Label"/>
+										<Description resid="InsertFootnoteButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.InsertFootnote.16x16"/>
+										<bt:Image size="32" resid="Icon.InsertFootnote.32x32"/>
+										<bt:Image size="80" resid="Icon.InsertFootnote.80x80"/>
+									</Icon>
+									<Action xsi:type="ExecuteFunction">
+										 <FunctionName>insertFootnote</FunctionName>
+									</Action>
+									<Enabled>false</Enabled>
+								</Control>
+								<Control xsi:type="Button" id="InsertParagraphButton">
+									<Label resid="InsertParagraphButton.Label"/>
+									<Supertip>
+										<Title resid="InsertParagraphButton.Label"/>
+										<Description resid="InsertParagraphButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.InsertParagraph.16x16"/>
+										<bt:Image size="32" resid="Icon.InsertParagraph.32x32"/>
+										<bt:Image size="80" resid="Icon.InsertParagraph.80x80"/>
+									</Icon>
+									<Action xsi:type="ExecuteFunction">
+										 <FunctionName>insertParagraph</FunctionName>
+									</Action>
+									<Enabled>false</Enabled>
+								</Control>
+							</Group>
+							<Group id="helpGroup">
+								<Label resid="grpHelp.Label"/>
+								<Icon>
+									<!--These are the required image sizes-->
+									<bt:Image size="16" resid="Icon.Help.16x16"/>
+									<bt:Image size="32" resid="Icon.Help.32x32"/>
+									<bt:Image size="80" resid="Icon.Help.80x80"/>
+								</Icon>
+								<Control xsi:type="Button" id="HelpButton">
+									<Label resid="HelpButton.Label"/>
+									<Supertip>
+										<Title resid="HelpButton.Label"/>
+										<Description resid="HelpButton.Tooltip"/>
+									</Supertip>
+									<Icon>
+										<bt:Image size="16" resid="Icon.Help.16x16"/>
+										<bt:Image size="32" resid="Icon.Help.32x32"/>
+										<bt:Image size="80" resid="Icon.Help.80x80"/>
+									</Icon>
+									<Action xsi:type="ShowTaskpane">
+										<TaskpaneId>LegalAssistTaskpane</TaskpaneId>
+										<SourceLocation resid="Help.Url"/>
+									</Action>
+								</Control>
+							</Group>
+							<!-- Label of your tab -->
+							<Label resid="Customtab.Label"/>
+						</CustomTab>
+					</ExtensionPoint>
+					<!-- Declares a context menu that will run a script. -->
+				</DesktopFormFactor>
+			</Host>
+		</Hosts>
+		<!-- All attributes named resid refer to the resources found in the Resources element. -->
+		<Resources>
+			<bt:Images>
+				<!-- Image resource URLs. These must be located at HTTPS endpoints.-->
+				<bt:Image id="Icon.16x16" DefaultValue="https://localhost:443/assets/logos/wk-logo-wheel-16x16.png"/>
+				<bt:Image id="Icon.32x32" DefaultValue="https://localhost:443/assets/logos/wk-logo-wheel-32x32.png"/>
+				<bt:Image id="Icon.80x80" DefaultValue="https://localhost:443/assets/logos/wk-logo-wheel-80x80.png"/>
+				<bt:Image id="Icon.Citation.16x16" DefaultValue="https://localhost:443/assets/icons/citations/citations-16x16.png"/>
+				<bt:Image id="Icon.Citation.32x32" DefaultValue="https://localhost:443/assets/icons/citations/citations-32x32.png"/>
+				<bt:Image id="Icon.Citation.80x80" DefaultValue="https://localhost:443/assets/icons/citations/citations-80x80.png"/>
+				<bt:Image id="Icon.LegalContext.16x16" DefaultValue="https://localhost:443/assets/icons/legal-context/legal-context-16x16.png"/>
+				<bt:Image id="Icon.LegalContext.32x32" DefaultValue="https://localhost:443/assets/icons/legal-context/legal-context-32x32.png"/>
+				<bt:Image id="Icon.LegalContext.80x80" DefaultValue="https://localhost:443/assets/icons/legal-context/legal-context-80x80.png"/>
+				<bt:Image id="Icon.LegalSearch.16x16" DefaultValue="https://localhost:443/assets/icons/search/search-16x16.png"/>
+				<bt:Image id="Icon.LegalSearch.32x32" DefaultValue="https://localhost:443/assets/icons/search/search-32x32.png"/>
+				<bt:Image id="Icon.LegalSearch.80x80" DefaultValue="https://localhost:443/assets/icons/search/search-80x80.png"/>
+				<bt:Image id="Icon.Help.16x16" DefaultValue="https://localhost:443/assets/icons/help/help-16x16.png"/>
+				<bt:Image id="Icon.Help.32x32" DefaultValue="https://localhost:443/assets/icons/help/help-32x32.png"/>
+				<bt:Image id="Icon.Help.80x80" DefaultValue="https://localhost:443/assets/icons/help/help-80x80.png"/>
+				<bt:Image id="Icon.InsertFootnote.16x16" DefaultValue="https://localhost:443/assets/icons/footnote/footnote-16x16.png"/>
+				<bt:Image id="Icon.InsertFootnote.32x32" DefaultValue="https://localhost:443/assets/icons/footnote/footnote-32x32.png"/>
+				<bt:Image id="Icon.InsertFootnote.80x80" DefaultValue="https://localhost:443/assets/icons/footnote/footnote-80x80.png"/>
+				<bt:Image id="Icon.InsertParagraph.16x16" DefaultValue="https://localhost:443/assets/icons/paragraph/paragraph-16x16.png"/>
+				<bt:Image id="Icon.InsertParagraph.32x32" DefaultValue="https://localhost:443/assets/icons/paragraph/paragraph-32x32.png"/>
+				<bt:Image id="Icon.InsertParagraph.80x80" DefaultValue="https://localhost:443/assets/icons/paragraph/paragraph-80x80.png"/>
+			</bt:Images>
+			<bt:Urls>
+				<bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
+				<bt:Url id="Commands.Url" DefaultValue="https://localhost:443/commands.html"/>
+				<bt:Url id="Taskpane.Url" DefaultValue="https://localhost:443/taskpane.html"/>
+				<bt:Url id="SearchCitations.Url" DefaultValue="https://localhost:443/taskpane.html?open=citations"/>
+				<bt:Url id="SearchLegalContext.Url" DefaultValue="https://localhost:443/taskpane.html?open=legal-context"/>
+				<bt:Url id="SearchLegalSearch.Url" DefaultValue="https://localhost:443/taskpane.html?open=legal-search"/>
+				<bt:Url id="Help.Url" DefaultValue="https://localhost:443/taskpane.html?open=help"/>
+			</bt:Urls>
+			<!-- Be careful about mixing up what can be a short and a long string.
+                    A common issue with add-in commands is mixing short and long strings.
+                    Read the documentation to make sure you use the correct string type.
+                    https://msdn.microsoft.com/EN-US/library/office/mt621545.aspx -->
+			<!--text declaration start-->
+			<bt:ShortStrings>
+				<bt:String id="GetStarted.Title" DefaultValue="Get started with Legal Assist add-in!"/>
+				<bt:String id="grpLegalAssist.Label" DefaultValue="Legal Assist"/>
+				<bt:String id="grpFunctionalities.Label" DefaultValue="Functionalities"/>
+				<bt:String id="grpHelp.Label" DefaultValue="Help"/>
+				<bt:String id="grpInsert.Label" DefaultValue="Insert"/>
+				<bt:String id="TaskpaneButton.Label" DefaultValue="Legal Assist"/>
+				<bt:String id="Customtab.Label" DefaultValue="Legal Assist"/>
+				<bt:String id="CitationButton.Label" DefaultValue="Citations"/>
+				<bt:String id="LegalContextButton.Label" DefaultValue="Legal Context"/>
+				<bt:String id="LegalSearchButton.Label" DefaultValue="Legal Search"/>
+				<bt:String id="HelpButton.Label" DefaultValue="Help"/>
+				<bt:String id="InsertFootnoteButton.Label" DefaultValue="Insert Footnote"/>
+				<bt:String id="InsertParagraphButton.Label" DefaultValue="Insert Paragraph"/>
+			</bt:ShortStrings>
+			<bt:LongStrings>
+				<bt:String id="GetStarted.Description" DefaultValue="Legal Assist add-in loaded successfully. Please click the 'Legal Assist' menu to get started."/>
+				<bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to open Legal Assist panel"/>
+				<bt:String id="CitationButton.Tooltip" DefaultValue="Click to open Citations panel"/>
+				<bt:String id="LegalContextButton.Tooltip" DefaultValue="Click to open Legal Context panel"/>
+				<bt:String id="CitationButton.Item1.Tooltip" DefaultValue="Search text for citations"/>
+				<bt:String id="LegalSearchButton.Tooltip" DefaultValue="Click to open Legal Search panel"/>
+				<bt:String id="HelpButton.Tooltip" DefaultValue="Click to open Help panel"/>
+				<bt:String id="InsertFootnoteButton.Tooltip" DefaultValue="Click to insert Footnote"/>
+				<bt:String id="InsertParagraphButton.Tooltip" DefaultValue="Click to insert Paragraph sign"/>
+			</bt:LongStrings>
+			<!--text declaration end-->
+		</Resources>
+	</VersionOverrides>
+</OfficeApp>
